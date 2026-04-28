@@ -1,0 +1,1297 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Protrack</title>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/common.css" />
+  </head>
+
+  <body>
+    <div class="page-wrapper">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+        "
+      >
+        <div>
+          <div style="display: flex; align-items: center; gap: 12px">
+            <h1>案件一覧</h1>
+            <div style="position: relative">
+              <button
+                onclick="toggleHamburger()"
+                id="hamburger-btn"
+                style="
+                  width: 36px;
+                  height: 36px;
+                  border-radius: 50%;
+                  background: white;
+                  border: 1px solid #bbb;
+                  cursor: pointer;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 16px;
+                  padding: 0;
+                  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+                "
+              >
+                ☰
+              </button>
+              <div
+                id="hamburger-menu"
+                style="
+                  display: none;
+                  position: absolute;
+                  top: 44px;
+                  left: 0;
+                  background: white;
+                  border: 1px solid #ccc;
+                  border-radius: 4px;
+                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                  z-index: 100;
+                  min-width: 160px;
+                "
+              >
+                <div
+                  onclick="goToCal()"
+                  style="padding: 10px 16px; cursor: pointer; font-size: 14px"
+                  onmouseover="this.style.backgroundColor = '#f0f0f0'"
+                  onmouseout="this.style.backgroundColor = 'white'"
+                >
+                  カレンダー設定
+                </div>
+                <div
+                  onclick="goToMfg()"
+                  style="padding: 10px 16px; cursor: pointer; font-size: 14px"
+                  onmouseover="this.style.backgroundColor = '#f0f0f0'"
+                  onmouseout="this.style.backgroundColor = 'white'"
+                >
+                  製造設定
+                </div>
+                <div
+                  onclick="goToMaster()"
+                  style="padding: 10px 16px; cursor: pointer; font-size: 14px"
+                  onmouseover="this.style.backgroundColor = '#f0f0f0'"
+                  onmouseout="this.style.backgroundColor = 'white'"
+                >
+                  客先/仕入先 設定
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              display: flex;
+              gap: 8px;
+              margin-top: 8px;
+              align-items: center;
+            "
+          >
+            <button onclick="goToForm()">新規登録</button>
+            <span
+              style="border-left: 1px solid #aaa; height: 28px; margin: 0 8px"
+            ></span>
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 2px;
+              "
+            >
+              <div style="display: flex; gap: 8px">
+                <button onclick="goToExtract()">データ抽出</button>
+                <button onclick="goToForecast()">生産予測</button>
+              </div>
+              <span style="font-size: 11px; color: #ff0000"
+                >※下記一覧のフィルタ結果が対象</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="user-info">
+          👤 管理者
+          <a onclick="logout()">ログアウト</a>
+        </div>
+      </div>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="🔍検索キーワードを入力"
+      />
+      <span style="margin-left: 40px; font-size: 14px">納期</span>
+      <input type="date" id="startDate" class="date" /> ～
+      <input type="date" id="endDate" class="date" />
+
+      <button onclick="resetFilters()">フィルタリセット</button>
+      <button class="btn-csv" onclick="downloadCSV()" style="margin-left: 16px">
+        CSVダウンロード
+      </button>
+      <div style="text-align: right; margin-bottom: 6px; font-size: 13px">
+        <span style="margin-right: 16px; color: #666"
+          >現在の対応者（太字）：</span
+        >
+        <span style="margin-right: 12px"
+          ><span
+            style="
+              display: inline-block;
+              width: 10px;
+              height: 10px;
+              border-radius: 50%;
+              background: #ff0101;
+              margin-right: 4px;
+              vertical-align: middle;
+            "
+          ></span
+          >依頼者</span
+        >
+        <span style="margin-right: 12px"
+          ><span
+            style="
+              display: inline-block;
+              width: 10px;
+              height: 10px;
+              border-radius: 50%;
+              background: #0f4ee2;
+              margin-right: 4px;
+              vertical-align: middle;
+            "
+          ></span
+          >設計者</span
+        >
+        <span style="margin-right: 12px"
+          ><span
+            style="
+              display: inline-block;
+              width: 10px;
+              height: 10px;
+              border-radius: 50%;
+              background: #1eb600;
+              margin-right: 4px;
+              vertical-align: middle;
+            "
+          ></span
+          >製造</span
+        >
+        <span style="margin-right: 12px"
+          ><span
+            style="
+              display: inline-block;
+              width: 10px;
+              height: 10px;
+              border-radius: 50%;
+              background: #1e1e1e;
+              margin-right: 4px;
+              vertical-align: middle;
+            "
+          ></span
+          >客先</span
+        >
+        <span
+          ><span
+            style="
+              display: inline-block;
+              width: 10px;
+              height: 10px;
+              border-radius: 50%;
+              background: #aaaaaa;
+              margin-right: 4px;
+              vertical-align: middle;
+            "
+          ></span
+          >キャンセル</span
+        >
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th onclick="sortByManagementNo()">
+                管理番号 <span id="arrow-management">↑↓</span>
+              </th>
+              <th id="th-type" style="position: relative">
+                試作/量産/トライ <span>▼</span>
+                <div
+                  id="typeFilter"
+                  style="
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background: white;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                    z-index: 9999;
+                    min-width: 120px;
+                    padding: 4px 0;
+                  "
+                >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="試作" /> 試作</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="量産" /> 量産</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="トライ" /> トライ</label
+                  >
+                </div>
+              </th>
+              <th id="th-product" style="position: relative">
+                品名 <span>▼</span>
+                <div
+                  id="productFilter"
+                  style="
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background: white;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                    z-index: 9999;
+                    min-width: 120px;
+                    padding: 4px 0;
+                  "
+                >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="ブシュ" /> ブシュ</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="メタル" /> メタル</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="ワッシャ" /> ワッシャ</label
+                  >
+                </div>
+              </th>
+              <th id="th-newrepeat" style="position: relative">
+                新規/繰返/号口 <span>▼</span>
+                <div
+                  id="newrepeatFilter"
+                  style="
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background: white;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                    z-index: 9999;
+                    min-width: 120px;
+                    padding: 4px 0;
+                  "
+                >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="新規" /> 新規</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="繰返" /> 繰返</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="号口" /> 号口</label
+                  >
+                </div>
+              </th>
+              <th id="th-standard" style="position: relative">
+                標準/標準外 <span>▼</span>
+                <div
+                  id="standardFilter"
+                  style="
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background: white;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                    z-index: 9999;
+                    min-width: 120px;
+                    padding: 4px 0;
+                  "
+                >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="標準" /> 標準</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="標準外" /> 標準外</label
+                  >
+                </div>
+              </th>
+              <th>品番</th>
+              <th>個数</th>
+              <th id="th-client" style="position: relative">
+                客先 <span>▼</span>
+                <div
+                  id="clientFilter"
+                  style="
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background: white;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                    z-index: 9999;
+                    min-width: 120px;
+                    padding: 4px 0;
+                  "
+                ></div>
+              </th>
+              <th id="th-requester" style="position: relative">
+                依頼者 <span>▼</span>
+                <div
+                  id="requesterFilter"
+                  style="
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background: white;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                    z-index: 9999;
+                    min-width: 120px;
+                    padding: 4px 0;
+                  "
+                ></div>
+              </th>
+              <th id="th-designer" style="position: relative">
+                設計者 <span>▼</span>
+                <div
+                  id="designerFilter"
+                  style="
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background: white;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                    z-index: 9999;
+                    min-width: 120px;
+                    padding: 4px 0;
+                  "
+                ></div>
+              </th>
+              <th id="th-mfgcontact" style="position: relative">
+                製造窓口 <span>▼</span>
+                <div
+                  id="mfgcontactFilter"
+                  style="
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background: white;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                    z-index: 9999;
+                    min-width: 120px;
+                    padding: 4px 0;
+                  "
+                ></div>
+              </th>
+              <th id="th-mfganswer" style="position: relative">
+                製造回答 <span>▼</span>
+                <div
+                  id="mfganswerFilter"
+                  style="
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background: white;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                    z-index: 9999;
+                    min-width: 120px;
+                    padding: 4px 0;
+                  "
+                ></div>
+              </th>
+              <th id="th-status" style="position: relative">
+                ステータス <span>▼</span>
+                <div
+                  id="statusFilter"
+                  style="
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background: white;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                    z-index: 9999;
+                    min-width: 160px;
+                    padding: 4px 0;
+                    max-height: 250px;
+                    overflow-y: auto;
+                  "
+                >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="図面依頼済" />
+                    図面依頼済</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="見積依頼済" />
+                    見積依頼済</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="設計中" /> 設計中</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="見積図出済" />
+                    見積図出済</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="見積中" /> 見積中</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="見積済" /> 見積済</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="見積客先回答済" />
+                    見積客先回答済</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="発注済(出図あり)" />
+                    発注済(出図あり)</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="発注済(出図なし)" />
+                    発注済(出図なし)</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="試作図出図済" />
+                    試作図出図済</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="発送済" /> 発送済</label
+                  >
+                  <label
+                    style="display: block; padding: 6px 12px; cursor: pointer"
+                    ><input type="checkbox" value="キャンセル" />
+                    キャンセル</label
+                  >
+                </div>
+              </th>
+              <th onclick="toggleSort()">
+                納期 <span id="arrow-due">↑↓</span>
+              </th>
+              <th id="th-supplier" style="position: relative">
+                仕入先 <span>▼</span>
+                <div
+                  id="supplierFilter"
+                  style="
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background: white;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                    z-index: 9999;
+                    min-width: 120px;
+                    padding: 4px 0;
+                  "
+                ></div>
+              </th>
+              <th onclick="sortBySupplierDueDate()">
+                仕入先納期 <span id="arrow-supplier-due">↑↓</span>
+              </th>
+              <th>その他</th>
+              <th class="col-mfgtype">製造種別</th>
+              <th class="col-mfgperiod">製造期間</th>
+              <th onclick="sortByUpdateDate()">
+                更新日 <span id="arrow-update">↑↓</span>
+              </th>
+              <th>更新者</th>
+              <th>編集</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>PT-260301-01</td>
+              <td>試作</td>
+              <td>ブシュ</td>
+              <td>新規</td>
+              <td>標準外</td>
+              <td>215A-12500</td>
+              <td>120</td>
+              <td>A社</td>
+              <td>田中</td>
+              <td>山田</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>図面依頼済</td>
+              <td>2026-04-15</td>
+              <td>ー</td>
+              <td></td>
+              <td>CB600N</td>
+              <td class="col-mfgtype">A プレーン(コイル)</td>
+              <td class="col-mfgperiod">2026-03-29 〜 2026-04-12</td>
+              <td>2026-03-02</td>
+              <td>田中</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <tr>
+              <td>PT-260301-02</td>
+              <td>量産</td>
+              <td>メタル</td>
+              <td>繰返</td>
+              <td>標準</td>
+              <td>223B-13300</td>
+              <td>80</td>
+              <td>B社</td>
+              <td>遠藤</td>
+              <td>三上</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>設計中</td>
+              <td>2026-04-18</td>
+              <td>ー</td>
+              <td></td>
+              <td>HB200</td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-04-01 〜 2026-04-15</td>
+              <td>2026-03-01</td>
+              <td>三上</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <tr>
+              <td>PT-260305-01</td>
+              <td>トライ</td>
+              <td>ワッシャ</td>
+              <td>新規</td>
+              <td>標準外</td>
+              <td>1213-55616</td>
+              <td>200</td>
+              <td>C社</td>
+              <td>遠藤</td>
+              <td>三上</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>見積依頼済</td>
+              <td>2026-04-20</td>
+              <td>ー</td>
+              <td></td>
+              <td>HB200</td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-04-03 〜 2026-04-17</td>
+              <td>2026-03-01</td>
+              <td>溝口</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <tr>
+              <td>PT-260305-02</td>
+              <td>試作</td>
+              <td>ブシュ</td>
+              <td>号口</td>
+              <td>標準</td>
+              <td>215B-22100</td>
+              <td>50</td>
+              <td>A社</td>
+              <td>田中</td>
+              <td>山田</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>見積中</td>
+              <td>2026-04-22</td>
+              <td>α工業</td>
+              <td>2026-04-16</td>
+              <td></td>
+              <td class="col-mfgtype">B プレーン(端材)</td>
+              <td class="col-mfgperiod">2026-04-05 〜 2026-04-19</td>
+              <td>2026-03-03</td>
+              <td>田中</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <tr>
+              <td>PT-260310-01</td>
+              <td>量産</td>
+              <td>メタル</td>
+              <td>新規</td>
+              <td>標準外</td>
+              <td>331C-10050</td>
+              <td>150</td>
+              <td>B社</td>
+              <td>遠藤</td>
+              <td>山田</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>見積済</td>
+              <td>2026-04-25</td>
+              <td>β精機</td>
+              <td>2026-04-19</td>
+              <td></td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-04-08 〜 2026-04-22</td>
+              <td>2026-03-05</td>
+              <td>山田</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <tr>
+              <td>PT-260310-02</td>
+              <td>トライ</td>
+              <td>ワッシャ</td>
+              <td>繰返</td>
+              <td>標準</td>
+              <td>1213-66700</td>
+              <td>30</td>
+              <td>C社</td>
+              <td>田中</td>
+              <td>三上</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>見積図出済</td>
+              <td>2026-04-28</td>
+              <td>ー</td>
+              <td></td>
+              <td>CB600N</td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-04-11 〜 2026-04-25</td>
+              <td>2026-03-06</td>
+              <td>三上</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 発注済(出図あり) 1月 -->
+            <tr>
+              <td>PT-260312-01</td>
+              <td>試作</td>
+              <td>ブシュ</td>
+              <td>新規</td>
+              <td>標準外</td>
+              <td>215A-33200</td>
+              <td>90</td>
+              <td>A社</td>
+              <td>田中</td>
+              <td>山田</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>発注済(出図あり)</td>
+              <td>2026-01-10</td>
+              <td>α工業</td>
+              <td>2026-01-04</td>
+              <td></td>
+              <td class="col-mfgtype">C プレーン(コイル)+M/C</td>
+              <td class="col-mfgperiod">2025-12-24 〜 2026-01-07</td>
+              <td>2026-03-08</td>
+              <td>田中</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 発注済(出図なし) 1月 -->
+            <tr>
+              <td>PT-260312-02</td>
+              <td>量産</td>
+              <td>メタル</td>
+              <td>号口</td>
+              <td>標準</td>
+              <td>331D-20100</td>
+              <td>60</td>
+              <td>B社</td>
+              <td>遠藤</td>
+              <td>三上</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>発注済(出図なし)</td>
+              <td>2026-01-18</td>
+              <td>ー</td>
+              <td></td>
+              <td>HB200</td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-01-01 〜 2026-01-15</td>
+              <td>2026-03-10</td>
+              <td>溝口</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 試作図出図済 1月 -->
+            <tr>
+              <td>PT-260315-01</td>
+              <td>試作</td>
+              <td>ブシュ</td>
+              <td>新規</td>
+              <td>標準外</td>
+              <td>215C-11100</td>
+              <td>75</td>
+              <td>A社</td>
+              <td>田中</td>
+              <td>山田</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>試作図出図済</td>
+              <td>2026-01-25</td>
+              <td>ー</td>
+              <td></td>
+              <td>CB600N</td>
+              <td class="col-mfgtype">A プレーン(コイル)</td>
+              <td class="col-mfgperiod">2026-01-08 〜 2026-01-22</td>
+              <td>2026-03-11</td>
+              <td>山田</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 発送済 2月 -->
+            <tr>
+              <td>PT-260315-02</td>
+              <td>量産</td>
+              <td>メタル</td>
+              <td>繰返</td>
+              <td>標準</td>
+              <td>331E-22200</td>
+              <td>110</td>
+              <td>B社</td>
+              <td>遠藤</td>
+              <td>三上</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>発送済</td>
+              <td>2026-02-05</td>
+              <td>ー</td>
+              <td></td>
+              <td>HB200</td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-01-19 〜 2026-02-02</td>
+              <td>2026-03-12</td>
+              <td>三上</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 発注済(出図あり) 2月 -->
+            <tr>
+              <td>PT-260316-01</td>
+              <td>試作</td>
+              <td>ブシュ</td>
+              <td>新規</td>
+              <td>標準外</td>
+              <td>215D-33300</td>
+              <td>85</td>
+              <td>A社</td>
+              <td>田中</td>
+              <td>山田</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>発注済(出図あり)</td>
+              <td>2026-02-12</td>
+              <td>α工業</td>
+              <td>2026-02-06</td>
+              <td></td>
+              <td class="col-mfgtype">B プレーン(端材)</td>
+              <td class="col-mfgperiod">2026-01-26 〜 2026-02-09</td>
+              <td>2026-03-13</td>
+              <td>田中</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 試作図出図済 2月 -->
+            <tr>
+              <td>PT-260316-02</td>
+              <td>トライ</td>
+              <td>ワッシャ</td>
+              <td>号口</td>
+              <td>標準</td>
+              <td>1213-44400</td>
+              <td>160</td>
+              <td>C社</td>
+              <td>遠藤</td>
+              <td>三上</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>試作図出図済</td>
+              <td>2026-02-20</td>
+              <td>β精機</td>
+              <td>2026-02-14</td>
+              <td></td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-02-03 〜 2026-02-17</td>
+              <td>2026-03-14</td>
+              <td>溝口</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 発注済(出図なし) 3月 -->
+            <tr>
+              <td>PT-260318-01</td>
+              <td>試作</td>
+              <td>ブシュ</td>
+              <td>新規</td>
+              <td>標準外</td>
+              <td>215E-55500</td>
+              <td>130</td>
+              <td>A社</td>
+              <td>田中</td>
+              <td>山田</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>発注済(出図なし)</td>
+              <td>2026-03-05</td>
+              <td>ー</td>
+              <td></td>
+              <td>CB600N</td>
+              <td class="col-mfgtype">C プレーン(コイル)+M/C</td>
+              <td class="col-mfgperiod">2026-02-16 〜 2026-03-02</td>
+              <td>2026-03-15</td>
+              <td>田中</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 発送済 3月 -->
+            <tr>
+              <td>PT-260318-02</td>
+              <td>量産</td>
+              <td>メタル</td>
+              <td>繰返</td>
+              <td>標準</td>
+              <td>331F-66600</td>
+              <td>95</td>
+              <td>B社</td>
+              <td>遠藤</td>
+              <td>三上</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>発送済</td>
+              <td>2026-03-12</td>
+              <td>β精機</td>
+              <td>2026-03-06</td>
+              <td></td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-02-23 〜 2026-03-09</td>
+              <td>2026-03-16</td>
+              <td>三上</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 発注済(出図あり) 3月 -->
+            <tr>
+              <td>PT-260320-01</td>
+              <td>試作</td>
+              <td>ブシュ</td>
+              <td>新規</td>
+              <td>標準外</td>
+              <td>215F-77700</td>
+              <td>115</td>
+              <td>A社</td>
+              <td>田中</td>
+              <td>山田</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>発注済(出図あり)</td>
+              <td>2026-03-20</td>
+              <td>α工業</td>
+              <td>2026-03-14</td>
+              <td></td>
+              <td class="col-mfgtype">A プレーン(コイル)</td>
+              <td class="col-mfgperiod">2026-03-03 〜 2026-03-17</td>
+              <td>2026-03-17</td>
+              <td>山田</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 発注済(出図なし) 4月 -->
+            <tr>
+              <td>PT-260320-02</td>
+              <td>試作</td>
+              <td>ブシュ</td>
+              <td>新規</td>
+              <td>標準</td>
+              <td>215G-88800</td>
+              <td>65</td>
+              <td>A社</td>
+              <td>遠藤</td>
+              <td>三上</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>発注済(出図なし)</td>
+              <td>2026-04-08</td>
+              <td>α工業</td>
+              <td>2026-04-02</td>
+              <td></td>
+              <td class="col-mfgtype">C プレーン(コイル)+M/C</td>
+              <td class="col-mfgperiod">2026-03-22 〜 2026-04-05</td>
+              <td>2026-03-18</td>
+              <td>田中</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 試作図出図済 4月 -->
+            <tr>
+              <td>PT-260322-01</td>
+              <td>量産</td>
+              <td>メタル</td>
+              <td>繰返</td>
+              <td>標準外</td>
+              <td>331G-99900</td>
+              <td>40</td>
+              <td>B社</td>
+              <td>田中</td>
+              <td>山田</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>試作図出図済</td>
+              <td>2026-04-15</td>
+              <td>ー</td>
+              <td></td>
+              <td>CB600N</td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-03-29 〜 2026-04-12</td>
+              <td>2026-03-19</td>
+              <td>溝口</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 発送済 4月 -->
+            <tr>
+              <td>PT-260322-02</td>
+              <td>トライ</td>
+              <td>ワッシャ</td>
+              <td>号口</td>
+              <td>標準</td>
+              <td>1213-11100</td>
+              <td>180</td>
+              <td>C社</td>
+              <td>遠藤</td>
+              <td>三上</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>発送済</td>
+              <td>2026-04-22</td>
+              <td>β精機</td>
+              <td>2026-04-16</td>
+              <td></td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-04-05 〜 2026-04-19</td>
+              <td>2026-03-20</td>
+              <td>三上</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 発注済(出図あり) 5月 -->
+            <tr>
+              <td>PT-260325-01</td>
+              <td>試作</td>
+              <td>ブシュ</td>
+              <td>新規</td>
+              <td>標準外</td>
+              <td>215H-22200</td>
+              <td>100</td>
+              <td>A社</td>
+              <td>田中</td>
+              <td>山田</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>発注済(出図あり)</td>
+              <td>2026-05-08</td>
+              <td>ー</td>
+              <td></td>
+              <td>HB200</td>
+              <td class="col-mfgtype">A プレーン(コイル)</td>
+              <td class="col-mfgperiod">2026-04-21 〜 2026-05-05</td>
+              <td>2026-03-21</td>
+              <td>田中</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 試作図出図済 5月 -->
+            <tr>
+              <td>PT-260325-02</td>
+              <td>量産</td>
+              <td>メタル</td>
+              <td>繰返</td>
+              <td>標準</td>
+              <td>331H-33300</td>
+              <td>55</td>
+              <td>B社</td>
+              <td>遠藤</td>
+              <td>三上</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>試作図出図済</td>
+              <td>2026-05-15</td>
+              <td>α工業</td>
+              <td>2026-05-09</td>
+              <td></td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-04-28 〜 2026-05-12</td>
+              <td>2026-03-22</td>
+              <td>山田</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 発送済 5月 -->
+            <tr>
+              <td>PT-260328-01</td>
+              <td>トライ</td>
+              <td>ワッシャ</td>
+              <td>号口</td>
+              <td>標準外</td>
+              <td>1213-44400</td>
+              <td>140</td>
+              <td>C社</td>
+              <td>田中</td>
+              <td>山田</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>発送済</td>
+              <td>2026-05-22</td>
+              <td>ー</td>
+              <td></td>
+              <td>CB600N</td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-05-05 〜 2026-05-19</td>
+              <td>2026-03-23</td>
+              <td>溝口</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 発注済(出図なし) 6月 -->
+            <tr>
+              <td>PT-260328-02</td>
+              <td>試作</td>
+              <td>ブシュ</td>
+              <td>新規</td>
+              <td>標準</td>
+              <td>215I-55500</td>
+              <td>70</td>
+              <td>A社</td>
+              <td>遠藤</td>
+              <td>三上</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>発注済(出図なし)</td>
+              <td>2026-06-05</td>
+              <td>β精機</td>
+              <td>2026-05-30</td>
+              <td></td>
+              <td class="col-mfgtype">B プレーン(端材)</td>
+              <td class="col-mfgperiod">2026-05-19 〜 2026-06-02</td>
+              <td>2026-03-24</td>
+              <td>三上</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 発注済(出図あり) 6月 -->
+            <tr>
+              <td>PT-260401-01</td>
+              <td>量産</td>
+              <td>メタル</td>
+              <td>繰返</td>
+              <td>標準外</td>
+              <td>331I-66600</td>
+              <td>100</td>
+              <td>B社</td>
+              <td>田中</td>
+              <td>山田</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>発注済(出図あり)</td>
+              <td>2026-06-12</td>
+              <td>ー</td>
+              <td></td>
+              <td>HB200</td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-05-26 〜 2026-06-09</td>
+              <td>2026-03-25</td>
+              <td>田中</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <!-- 発送済 6月 -->
+            <tr>
+              <td>PT-260401-02</td>
+              <td>トライ</td>
+              <td>ワッシャ</td>
+              <td>号口</td>
+              <td>標準</td>
+              <td>1213-77700</td>
+              <td>220</td>
+              <td>C社</td>
+              <td>遠藤</td>
+              <td>三上</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>発送済</td>
+              <td>2026-06-20</td>
+              <td>α工業</td>
+              <td>2026-06-14</td>
+              <td></td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-06-03 〜 2026-06-17</td>
+              <td>2026-03-26</td>
+              <td>溝口</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <tr>
+              <td>PT-260403-01</td>
+              <td>試作</td>
+              <td>ブシュ</td>
+              <td>新規</td>
+              <td>標準外</td>
+              <td>215H-99800</td>
+              <td>35</td>
+              <td>A社</td>
+              <td>田中</td>
+              <td>山田</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>キャンセル</td>
+              <td>2026-06-22</td>
+              <td>ー</td>
+              <td></td>
+              <td>CB600N</td>
+              <td class="col-mfgtype">C プレーン(コイル)+M/C</td>
+              <td class="col-mfgperiod">2026-06-05 〜 2026-06-19</td>
+              <td>2026-03-27</td>
+              <td>山田</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <tr>
+              <td>PT-260403-02</td>
+              <td>量産</td>
+              <td>メタル</td>
+              <td>繰返</td>
+              <td>標準</td>
+              <td>331J-80700</td>
+              <td>175</td>
+              <td>B社</td>
+              <td>遠藤</td>
+              <td>三上</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>図面依頼済</td>
+              <td>2026-06-25</td>
+              <td>β精機</td>
+              <td>2026-06-19</td>
+              <td></td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-06-08 〜 2026-06-22</td>
+              <td>2026-03-28</td>
+              <td>三上</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <tr>
+              <td>PT-260407-01</td>
+              <td>トライ</td>
+              <td>ワッシャ</td>
+              <td>号口</td>
+              <td>標準外</td>
+              <td>1213-44500</td>
+              <td>90</td>
+              <td>C社</td>
+              <td>田中</td>
+              <td>山田</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>設計中</td>
+              <td>2026-07-01</td>
+              <td>ー</td>
+              <td></td>
+              <td>HB200</td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-06-14 〜 2026-06-28</td>
+              <td>2026-03-29</td>
+              <td>田中</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <tr>
+              <td>PT-260407-02</td>
+              <td>試作</td>
+              <td>ブシュ</td>
+              <td>新規</td>
+              <td>標準</td>
+              <td>215I-11900</td>
+              <td>115</td>
+              <td>A社</td>
+              <td>遠藤</td>
+              <td>三上</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>見積中</td>
+              <td>2026-07-05</td>
+              <td>α工業</td>
+              <td>2026-06-29</td>
+              <td></td>
+              <td class="col-mfgtype">A プレーン(コイル)</td>
+              <td class="col-mfgperiod">2026-06-18 〜 2026-07-02</td>
+              <td>2026-03-30</td>
+              <td>溝口</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <tr>
+              <td>PT-260410-01</td>
+              <td>量産</td>
+              <td>メタル</td>
+              <td>繰返</td>
+              <td>標準外</td>
+              <td>331K-90800</td>
+              <td>60</td>
+              <td>B社</td>
+              <td>田中</td>
+              <td>山田</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>設計中</td>
+              <td>2026-07-08</td>
+              <td>ー</td>
+              <td></td>
+              <td>CB600N</td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-06-21 〜 2026-07-05</td>
+              <td>2026-04-01</td>
+              <td>山田</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+            <tr>
+              <td>PT-260410-02</td>
+              <td>トライ</td>
+              <td>ワッシャ</td>
+              <td>号口</td>
+              <td>標準</td>
+              <td>1213-55600</td>
+              <td>145</td>
+              <td>C社</td>
+              <td>遠藤</td>
+              <td>三上</td>
+              <td>溝口</td>
+              <td>本田</td>
+              <td>見積客先回答済</td>
+              <td>2026-07-10</td>
+              <td>β精機</td>
+              <td>2026-07-04</td>
+              <td></td>
+              <td class="col-mfgtype"></td>
+              <td class="col-mfgperiod">2026-06-23 〜 2026-07-07</td>
+              <td>2026-04-02</td>
+              <td>三上</td>
+              <td><button onclick="goToForm()">🖊</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- table-wrapper閉じ -->
+    </div>
+    <!-- page-wrapper閉じ -->
+    <script src="js/common.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>

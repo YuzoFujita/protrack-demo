@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>カレンダー設定 - Protrack</title>
+    <link rel="stylesheet" href="css/cal.css" />
+    <link rel="stylesheet" href="css/common.css" />
+  </head>
+  <body>
+    <div class="cal-page">
+      <!-- ヘッダー -->
+      <div class="cal-header">
+        <h1>カレンダー設定</h1>
+        <div class="user-info">
+          👤 管理者
+          <a onclick="logout()">ログアウト</a>
+        </div>
+      </div>
+
+      <!-- 年度選択 -->
+      <div class="year-row">
+        <label>年度</label>
+        <div class="year-selector">
+          <button class="year-btn" onclick="changeYear(-1)">◀</button>
+          <span id="currentYear">2026</span>
+          <button class="year-btn" onclick="changeYear(1)">▶</button>
+        </div>
+      </div>
+
+      <!-- 対象期間 -->
+      <div class="period-row">
+        <label>対象期間</label>
+        <span id="periodLabel">2026年4月 ～ 2027年3月</span>
+      </div>
+
+      <!-- 休日変更説明 -->
+      <div class="holiday-note">
+        休日変更
+        <span class="holiday-note-red"
+          >※日付クリックで「稼働日／休日」を切り替え</span
+        >
+        <hr class="note-line" />
+      </div>
+
+      <!-- カレンダーグリッド（4列×3行） -->
+      <div class="calendar-grid" id="calendarGrid">
+        <!-- JSで動的生成 -->
+      </div>
+
+      <!-- 稼働日数合計 -->
+      <div class="work-days-total">
+        稼働日数　<span id="totalWorkDays">0</span>日
+      </div>
+
+      <!-- ボタン -->
+      <div class="form-buttons">
+        <button class="btn-cancel" onclick="goBack()">キャンセル</button>
+        <button class="btn-save" onclick="saveCal()">保存</button>
+      </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script src="js/cal.js"></script>
+  </body>
+</html>

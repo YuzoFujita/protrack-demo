@@ -1,0 +1,232 @@
+/* ===========================
+   extract.css - データ抽出ページ専用スタイル
+   =========================== */
+
+/* ページ背景 */
+.extract-page {
+  background-color: #e5f0fa;
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* ユーザー情報（右上） */
+.user-info {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  text-align: right;
+  font-size: 14px;
+}
+
+.user-info a {
+  display: block;
+  color: black;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ページヘッダー（タイトル＋戻るボタン） */
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+/* 戻るボタン */
+.btn-back {
+  height: 40px;
+  padding: 0 24px;
+  font-size: 16px;
+  background-color: #ffff00;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-back:hover {
+  opacity: 0.8;
+}
+
+/* リストセクション */
+.list-section {
+  margin-bottom: 32px;
+}
+
+.list-section h2 {
+  font-size: 20px;
+  margin: 0 0 10px 0;
+}
+
+/* 一覧コンテナ */
+.list-container {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  overflow-x: auto;
+}
+
+/* テーブル */
+.extract-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.extract-table thead tr {
+  background-color: #ddffea;
+}
+
+.extract-table th {
+  padding: 8px 10px;
+  text-align: left;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.extract-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 13px;
+}
+
+.extract-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ステータスドット */
+.status-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* ダッシュボードセクション */
+.dashboard-section {
+  margin-top: 8px;
+}
+
+.dashboard-section h2 {
+  font-size: 20px;
+  margin: 0 0 12px 0;
+}
+
+/* コントロールエリア（グラフ選択 + CSVボタン） */
+.dashboard-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+/* グラフ選択 */
+.graph-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.selector-label {
+  font-size: 16px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* グラフ選択ボタン */
+.graph-btn {
+  height: 40px;
+  padding: 0 20px;
+  font-size: 14px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.graph-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.graph-btn.active {
+  background-color: #1e1e1e;
+  color: white;
+  border-color: #1e1e1e;
+}
+
+/* CSVダウンロードボタン */
+.btn-csv {
+  height: 40px;
+  padding: 0 20px;
+  font-size: 14px;
+  background-color: #00fff7;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.btn-csv:hover {
+  opacity: 0.8;
+  background-color: #00e5ff;
+}
+
+/* グラフエリア */
+.chart-area {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.chart-wrapper {
+  width: 100%;
+  position: relative;
+  min-height: 400px;
+}
+
+/* データなしメッセージ */
+.no-data {
+  text-align: center;
+  padding: 60px 0;
+  color: #aaa;
+  font-size: 16px;
+}
+
+/* テーブルラッパー */
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+/* ヘッダー固定 */
+.list-section thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.list-section thead th {
+  background-color: #ddffea;
+}
+
+/* キャンセル行のグレー表示 */
+.extract-table tbody tr.cancelled {
+  background-color: #f0f0f0;
+  color: #aaa;
+}

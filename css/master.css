@@ -1,0 +1,222 @@
+/* ===========================
+   master.css - 客先/仕入先設定ページ専用スタイル
+   =========================== */
+
+/* ページ背景 */
+.master-page {
+  background-color: #e5f0fa;
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+}
+
+/* ユーザー情報（右上） */
+.user-info {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  text-align: right;
+  font-size: 14px;
+}
+
+.user-info a {
+  display: block;
+  color: black;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* 左右2カラム */
+.master-container {
+  display: flex;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+/* 各セクション（左・右） */
+.master-section {
+  flex: 1;
+}
+
+/* セクションヘッダー（タイトル＋新規登録ボタン） */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+.section-header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+/* 新規登録ボタン */
+.btn-new {
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-new:hover {
+  background-color: #e0e0e0;
+}
+
+/* 検索エリア */
+.search-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.search-area input {
+  width: 260px;
+  height: 36px;
+  padding: 0 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+/* 一覧コンテナ */
+.list-container {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  min-height: 300px;
+}
+
+/* テーブル */
+.master-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.master-table thead tr {
+  background-color: #ddffea;
+}
+
+.master-table th {
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 13px;
+  cursor: default;
+  white-space: nowrap;
+}
+
+.master-table th[onclick] {
+  cursor: pointer;
+}
+
+.master-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.master-table tr:last-child td {
+  border-bottom: none;
+}
+
+.master-table button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* インラインフォーム */
+.inline-form {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 20px;
+  margin-top: 20px;
+  max-width: 400px;
+}
+
+.inline-form h3 {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+}
+
+.inline-form .form-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.inline-form .form-row label {
+  width: 80px;
+  font-size: 16px;
+}
+
+.inline-form .form-input {
+  width: 260px;
+  height: 36px;
+  padding: 0 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* ページ下部ボタン */
+.page-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+/* 保存ボタン */
+.btn-save {
+  width: 134px;
+  height: 40px;
+  font-size: 20px;
+  background-color: #00e5ff;
+  border: 1px solid #00b8cc;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* キャンセルボタン */
+.btn-cancel {
+  width: 134px;
+  height: 40px;
+  font-size: 20px;
+  background-color: #ffff00;
+  border: 1px solid #ccb800;
+  cursor: pointer;
+}
+
+.btn-save:hover,
+.btn-cancel:hover {
+  opacity: 0.8;
+}
+
+/* テーブルラッパー */
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+/* ヘッダー固定 */
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+thead th {
+  background-color: #ddffea;
+}

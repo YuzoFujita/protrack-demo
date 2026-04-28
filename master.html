@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>客先/仕入先設定 - Protrack</title>
+    <link rel="stylesheet" href="css/master.css" />
+    <link rel="stylesheet" href="css/common.css" />
+  </head>
+  <body>
+    <div class="master-page">
+      <!-- ユーザー情報（右上） -->
+      <div class="user-info">
+        👤 管理者
+        <a onclick="logout()">ログアウト</a>
+      </div>
+
+      <!-- メインコンテンツ（左右2カラム） -->
+      <div class="master-container">
+        <!-- 左側：客先設定 -->
+        <div class="master-section">
+          <div class="section-header">
+            <h1>客先設定</h1>
+          </div>
+          <div style="margin-bottom: 12px">
+            <button class="btn-new" onclick="showClientForm()">新規登録</button>
+          </div>
+          <div class="search-area">
+            <input
+              type="text"
+              id="clientSearch"
+              oninput="filterClient()"
+              placeholder="🔍検索キーワードを入力"
+            />
+          </div>
+          <div class="list-container">
+            <div class="table-wrapper">
+              <table class="master-table">
+                <thead>
+                  <tr>
+                    <th>管理番号</th>
+                    <th onclick="sortClient('name')">
+                      客先 <span id="arrow-client-name">↑↓</span>
+                    </th>
+                    <th onclick="sortClient('date')">
+                      登録日 <span id="arrow-client-date">↑↓</span>
+                    </th>
+                    <th>編集</th>
+                    <th>削除</th>
+                  </tr>
+                </thead>
+                <tbody id="clientTableBody">
+                  <!-- JSで動的生成 -->
+                </tbody>
+              </table>
+            </div>
+            <!-- table-wrapper -->
+          </div>
+        </div>
+
+        <!-- 右側：仕入先設定 -->
+        <div class="master-section">
+          <div class="section-header">
+            <h1>仕入先設定</h1>
+          </div>
+          <div style="margin-bottom: 12px">
+            <button class="btn-new" onclick="showSupplierForm()">
+              新規登録
+            </button>
+          </div>
+          <div class="search-area">
+            <input
+              type="text"
+              id="supplierSearch"
+              oninput="filterSupplier()"
+              placeholder="🔍検索キーワードを入力"
+            />
+          </div>
+          <div class="list-container">
+            <div class="table-wrapper">
+              <table class="master-table">
+                <thead>
+                  <tr>
+                    <th>管理番号</th>
+                    <th onclick="sortSupplier('name')">
+                      仕入先 <span id="arrow-supplier-name">↑↓</span>
+                    </th>
+                    <th onclick="sortSupplier('date')">
+                      登録日 <span id="arrow-supplier-date">↑↓</span>
+                    </th>
+                    <th>編集</th>
+                    <th>削除</th>
+                  </tr>
+                </thead>
+                <tbody id="supplierTableBody">
+                  <!-- JSで動的生成 -->
+                </tbody>
+              </table>
+            </div>
+            <!-- table-wrapper -->
+          </div>
+        </div>
+      </div>
+      <!-- /master-container -->
+
+      <!-- 客先入力フォーム（インライン） -->
+      <div class="inline-form" id="clientForm" style="display: none">
+        <h3 id="clientFormTitle">客先 新規登録</h3>
+        <div class="form-row">
+          <label>客先名</label>
+          <input
+            type="text"
+            id="clientInput"
+            class="form-input"
+            placeholder="客先名を入力"
+          />
+        </div>
+        <div class="form-buttons">
+          <button class="btn-cancel" onclick="closeClientForm()">
+            キャンセル
+          </button>
+          <button class="btn-save" onclick="saveClient()">仮登録</button>
+        </div>
+      </div>
+
+      <!-- 仕入先入力フォーム（インライン） -->
+      <div class="inline-form" id="supplierForm" style="display: none">
+        <h3 id="supplierFormTitle">仕入先 新規登録</h3>
+        <div class="form-row">
+          <label>仕入先名</label>
+          <input
+            type="text"
+            id="supplierInput"
+            class="form-input"
+            placeholder="仕入先名を入力"
+          />
+        </div>
+        <div class="form-buttons">
+          <button class="btn-cancel" onclick="closeSupplierForm()">
+            キャンセル
+          </button>
+          <button class="btn-save" onclick="saveSupplier()">仮登録</button>
+        </div>
+      </div>
+
+      <!-- ページ下部ボタン -->
+      <div class="page-buttons">
+        <button class="btn-cancel" onclick="goBack()">キャンセル</button>
+        <button class="btn-save" onclick="saveAll()">保存</button>
+      </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script src="js/master.js"></script>
+  </body>
+</html>

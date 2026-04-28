@@ -1,0 +1,203 @@
+/* ===========================
+   index.css - 案件一覧ページ専用スタイル
+   =========================== */
+
+/* ページ背景 */
+body {
+  background-color: #e5f0fa;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* ユーザー情報（右上） */
+.user-info {
+  text-align: right;
+  font-size: 14px;
+}
+
+.user-info a {
+  display: block;
+  color: black;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ページヘッダー */
+h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+/* ボタン */
+button {
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #e0e0e0;
+}
+
+.btn-csv {
+  background-color: #00fff7;
+  border: none;
+  font-weight: bold;
+}
+
+.btn-csv:hover {
+  opacity: 0.8;
+  background-color: #00e5ff;
+}
+
+/* 検索・日付入力エリア */
+input[type="text"],
+input[type="date"] {
+  height: 36px;
+  padding: 0 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  background-color: white;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+}
+
+input[type="text"] {
+  width: 200px;
+}
+
+.date {
+  width: 130px;
+}
+
+/* テーブルコンテナ */
+table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  white-space: nowrap;
+  background-color: white;
+  border: none;
+  border-radius: 0;
+}
+
+/* テーブルヘッダー */
+thead tr {
+  background-color: #ddffea;
+}
+
+th {
+  padding: 8px 10px;
+  text-align: left;
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: default;
+}
+
+th[onclick] {
+  cursor: pointer;
+}
+
+th[id] {
+  cursor: pointer;
+}
+
+/* ソート矢印 */
+th span {
+  margin-left: 4px;
+  font-size: 12px;
+}
+
+/* テーブルボディ */
+td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 13px;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background-color: #f0f8ff;
+}
+
+/* 編集ボタン */
+td button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  height: auto;
+  padding: 0;
+}
+
+/* ステータスドット */
+.status-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* 隠し列（製造種別・製造期間） */
+.col-mfgtype,
+.col-mfgperiod {
+  display: none;
+}
+
+/* ページラッパー */
+.page-wrapper {
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* テーブルラッパー */
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: auto;
+  height: calc(70vh - 32px);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* ラッパーに移すのでtableのborder削除 */
+table {
+  border: none;
+  border-radius: 0;
+}
+
+/* ヘッダー固定 */
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+thead th {
+  background-color: #ddffea;
+}
+
+/* キャンセル行のグレー表示 */
+tbody tr.cancelled {
+  background-color: #f0f0f0;
+  color: #aaa;
+}
+
+tbody tr.cancelled:hover {
+  background-color: #e8e8e8;
+}
+
+.table-wrapper table thead {
+  display: table-header-group !important;
+}

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>データ抽出 - Protrack</title>
+    <link rel="stylesheet" href="css/extract.css" />
+    <link rel="stylesheet" href="css/common.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  </head>
+  <body>
+    <div class="extract-page">
+      <!-- ユーザー情報（右上） -->
+      <div class="user-info">
+        👤 管理者
+        <a onclick="logout()">ログアウト</a>
+      </div>
+
+      <!-- ページヘッダー -->
+      <div class="page-header">
+        <h1>データ抽出</h1>
+        <button class="btn-back" onclick="goBack()">戻る</button>
+      </div>
+
+      <!-- リストセクション -->
+      <div class="list-section">
+        <h2>リスト</h2>
+        <div class="list-container">
+          <div class="table-wrapper">
+            <table class="extract-table" id="extractTable">
+              <thead>
+                <tr>
+                  <th>管理番号</th>
+                  <th>試作/量産/トライ</th>
+                  <th>品名</th>
+                  <th>新規/繰返/号口</th>
+                  <th>標準/標準外</th>
+                  <th>品番</th>
+                  <th>個数</th>
+                  <th>客先</th>
+                  <th>依頼者</th>
+                  <th>設計者</th>
+                  <th>製造窓口</th>
+                  <th>製造回答</th>
+                  <th>ステータス</th>
+                  <th>納期</th>
+                  <th>仕入先</th>
+                  <th>仕入先納期</th>
+                  <th>その他</th>
+                  <th>更新日</th>
+                  <th>更新者</th>
+                </tr>
+              </thead>
+              <tbody id="extractTableBody">
+                <!-- JSで動的生成 -->
+              </tbody>
+            </table>
+          </div>
+          <!-- table-wrapper -->
+        </div>
+      </div>
+
+      <!-- ダッシュボードセクション -->
+      <div class="dashboard-section">
+        <h2>ダッシュボード</h2>
+        <div class="dashboard-controls">
+          <div class="graph-selector">
+            <span class="selector-label">グラフ選択</span>
+            <button
+              class="graph-btn active"
+              id="btn-count"
+              onclick="switchGraph('count')"
+            >
+              個数
+            </button>
+            <button
+              class="graph-btn"
+              id="btn-mfgtime"
+              onclick="switchGraph('mfgtime')"
+            >
+              製造時間と必要人員
+            </button>
+            <button
+              class="graph-btn"
+              id="btn-gantt"
+              onclick="switchGraph('gantt')"
+            >
+              仮)製造期間
+            </button>
+          </div>
+          <button class="btn-csv" onclick="downloadCSV()">
+            CSVダウンロード
+          </button>
+        </div>
+
+        <!-- グラフエリア -->
+        <div class="chart-area">
+          <div id="chart-count" class="chart-wrapper">
+            <canvas id="countChart"></canvas>
+          </div>
+          <div id="chart-mfgtime" class="chart-wrapper" style="display: none">
+            <canvas id="mfgtimeChart"></canvas>
+          </div>
+          <div id="chart-gantt" class="chart-wrapper" style="display: none">
+            <canvas id="ganttChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/common.js"></script>
+    <script src="js/extract.js"></script>
+  </body>
+</html>

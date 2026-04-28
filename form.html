@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>登録/編集 - Protrack</title>
+    <link rel="stylesheet" href="css/form.css" />
+    <link rel="stylesheet" href="css/common.css" />
+  </head>
+  <body>
+    <div class="form-page">
+      <!-- ヘッダー -->
+      <div class="form-header">
+        <h1>登録/編集</h1>
+        <div class="user-info">
+          👤 ユーザー名
+          <a onclick="logout()">ログアウト</a>
+        </div>
+      </div>
+
+      <!-- 管理番号（自動生成・表示のみ） -->
+      <div class="management-no">
+        管理番号：<span id="managementNo">（自動生成）</span>
+      </div>
+
+      <!-- フォーム＋右パネルの横並びラッパー -->
+      <div class="form-wrapper">
+        <!-- フォーム本体 -->
+        <div class="form-container">
+          <!-- 試作/量産/トライ -->
+          <div class="form-row">
+            <label class="form-label" for="productType">試作/量産/トライ</label>
+            <select id="productType" class="form-input">
+              <option value="">選択</option>
+              <option value="試作">試作</option>
+              <option value="量産">量産</option>
+              <option value="トライ">トライ</option>
+            </select>
+          </div>
+
+          <!-- 品名 -->
+          <div class="form-row">
+            <label class="form-label" for="productName">品名</label>
+            <select id="productName" class="form-input">
+              <option value="">選択</option>
+              <option value="メタル">メタル</option>
+              <option value="ブシュ">ブシュ</option>
+              <option value="ワッシャ">ワッシャ</option>
+            </select>
+          </div>
+
+          <!-- 新規/繰返 -->
+          <div class="form-row">
+            <label class="form-label" for="newOrRepeat">新規/繰返/号口</label>
+            <select id="newOrRepeat" class="form-input">
+              <option value="">選択</option>
+              <option value="新規">新規</option>
+              <option value="繰返">繰返</option>
+              <option value="号口">号口</option>
+            </select>
+          </div>
+
+          <!-- 標準/標準外 -->
+          <div class="form-row">
+            <label class="form-label" for="standardType">標準/標準外</label>
+            <select id="standardType" class="form-input">
+              <option value="">選択</option>
+              <option value="標準">標準</option>
+              <option value="標準外">標準外</option>
+            </select>
+          </div>
+
+          <!-- 品番 -->
+          <div class="form-row">
+            <label class="form-label" for="partNo">品番</label>
+            <input
+              type="text"
+              id="partNo"
+              class="form-input"
+              placeholder="入力すると過去候補が出ます"
+              autocomplete="off"
+            />
+          </div>
+
+          <!-- 個数 -->
+          <div class="form-row">
+            <label class="form-label" for="quantity">個数</label>
+            <input
+              type="number"
+              id="quantity"
+              class="form-input"
+              placeholder="自由入力"
+              min="1"
+            />
+          </div>
+
+          <!-- 客先 -->
+          <div class="form-row">
+            <label class="form-label" for="client">客先</label>
+            <select id="client" class="form-input">
+              <option value="">選択</option>
+              <option value="A社">A社</option>
+              <option value="B社">B社</option>
+              <option value="C社">C社</option>
+            </select>
+          </div>
+
+          <hr class="form-divider" />
+
+          <!-- 依頼者 -->
+          <div class="form-row">
+            <label class="form-label" for="requester">依頼者</label>
+            <select id="requester" class="form-input">
+              <option value="">選択</option>
+              <option value="田中">田中</option>
+              <option value="遠藤">遠藤</option>
+            </select>
+          </div>
+
+          <!-- 設計者 -->
+          <div class="form-row">
+            <label class="form-label" for="designer">設計者</label>
+            <select id="designer" class="form-input">
+              <option value="">選択</option>
+              <option value="山田">山田</option>
+              <option value="三上">三上</option>
+            </select>
+          </div>
+
+          <!-- 製造窓口 -->
+          <div class="form-row">
+            <label class="form-label" for="mfgContact">製造窓口</label>
+            <select id="mfgContact" class="form-input">
+              <option value="">選択</option>
+              <option value="溝口">溝口</option>
+            </select>
+          </div>
+
+          <!-- 製造回答 -->
+          <div class="form-row">
+            <label class="form-label" for="mfgAnswer">製造回答</label>
+            <select id="mfgAnswer" class="form-input">
+              <option value="">選択</option>
+              <option value="本田">本田</option>
+            </select>
+          </div>
+
+          <hr class="form-divider" />
+
+          <!-- ステータス -->
+          <div class="form-row">
+            <label class="form-label" for="status">ステータス</label>
+            <select id="status" class="form-input">
+              <option value="">選択</option>
+              <option value="図面依頼済">図面依頼済</option>
+              <option value="見積依頼済">見積依頼済</option>
+              <option value="設計中">設計中</option>
+              <option value="見積図出図済">見積図出図済</option>
+              <option value="見積中">見積中</option>
+              <option value="見積済">見積済</option>
+              <option value="見積客先回答済">見積客先回答済</option>
+              <option value="発注済(出図あり)">発注済(出図あり)</option>
+              <option value="発注済(出図なし)">発注済(出図なし)</option>
+              <option value="試作図出図済">試作図出図済</option>
+              <option value="発送済">発送済</option>
+              <option value="キャンセル">キャンセル</option>
+            </select>
+            <span
+              id="statusDot"
+              class="status-dot"
+              style="display: none"
+            ></span>
+          </div>
+
+          <!-- 納期 -->
+          <div class="form-row">
+            <label class="form-label" for="dueDate">納期</label>
+            <input
+              type="date"
+              id="dueDate"
+              class="form-input"
+              style="width: 328px"
+            />
+          </div>
+
+          <!-- 仕入先 -->
+          <div class="form-row">
+            <label class="form-label" for="supplier">仕入先</label>
+            <select id="supplier" class="form-input">
+              <option value="ー">ー</option>
+              <option value="α工業">α工業</option>
+              <option value="β精機">β精機</option>
+              <!-- バックエンド実装後に動的取得 -->
+            </select>
+          </div>
+
+          <!-- 仕入先納期 -->
+          <div class="form-row">
+            <label class="form-label" for="supplierDueDate">仕入先納期</label>
+            <input
+              type="date"
+              id="supplierDueDate"
+              class="form-input"
+              style="width: 328px"
+            />
+          </div>
+
+          <!-- その他 -->
+          <div class="form-row">
+            <label class="form-label" for="notes">その他</label>
+            <input
+              type="text"
+              id="notes"
+              class="form-input"
+              placeholder="自由記入"
+            />
+          </div>
+
+          <hr class="form-divider" />
+
+          <!-- 製造種別 -->
+          <div class="form-row">
+            <label class="form-label" for="mfgType">製造種別</label>
+            <select id="mfgType" class="form-input">
+              <option value="">選択してください</option>
+              <option value="A プレーン(コイル)">A プレーン(コイル)</option>
+              <option value="B プレーン(端材)">B プレーン(端材)</option>
+              <option value="C プレーン(コイル)+M/C">
+                C プレーン(コイル)+M/C
+              </option>
+            </select>
+          </div>
+
+          <!-- 製造期間 -->
+          <div class="form-row">
+            <label class="form-label">製造期間</label>
+            <div class="date-range">
+              <input type="date" id="mfgStart" class="form-input" />
+              <span>～</span>
+              <input type="date" id="mfgEnd" class="form-input" />
+            </div>
+          </div>
+
+          <!-- ボタン -->
+          <div class="form-buttons">
+            <button class="btn-cancel" onclick="goBack()">キャンセル</button>
+            <button class="btn-save" onclick="saveForm()">保存</button>
+          </div>
+        </div>
+        <!-- /form-container -->
+
+        <!-- 右パネル：製造時間テーブル（品名・製造種別・個数が揃ったら表示） -->
+        <div class="mfg-panel" id="mfgPanel" style="display: none">
+          <div class="mfg-panel-header">
+            総製造時間：<span id="totalMfgTime">0.0</span> h
+          </div>
+          <table class="mfg-table">
+            <thead>
+              <tr>
+                <th>工程</th>
+                <th>生産時間, h</th>
+                <th>段替時間, h</th>
+                <th>計, h</th>
+              </tr>
+            </thead>
+            <tbody id="mfgTableBody">
+              <!-- JS で動的生成 -->
+            </tbody>
+            <tfoot>
+              <tr class="mfg-table-total">
+                <td>計, h</td>
+                <td id="totalProductionTime">0.0</td>
+                <td id="totalSetupTime">0.0</td>
+                <td id="totalTime">0.0</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <!-- /mfg-panel -->
+      </div>
+      <!-- /form-wrapper -->
+    </div>
+
+    <script src="js/common.js"></script>
+    <script src="js/form.js"></script>
+  </body>
+</html>

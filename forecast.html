@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>生産予測 - Protrack</title>
+    <link rel="stylesheet" href="css/forecast.css" />
+    <link rel="stylesheet" href="css/common.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  </head>
+  <body>
+    <div class="forecast-page">
+      <!-- ユーザー情報（右上） -->
+      <div class="user-info">
+        👤 管理者
+        <a onclick="logout()">ログアウト</a>
+      </div>
+
+      <!-- ページヘッダー -->
+      <div class="page-header">
+        <h1>生産予測</h1>
+        <button class="btn-back" onclick="goBack()">戻る</button>
+      </div>
+
+      <!-- ダッシュボードセクション -->
+      <div class="dashboard-section">
+        <h2>ダッシュボード</h2>
+        <div class="dashboard-controls">
+          <div class="graph-selector">
+            <span class="selector-label">グラフ選択</span>
+            <button
+              class="graph-btn active"
+              id="btn-count"
+              onclick="switchGraph('count')"
+            >
+              個数
+            </button>
+            <button
+              class="graph-btn"
+              id="btn-mfgtime"
+              onclick="switchGraph('mfgtime')"
+            >
+              製造時間と必要人員
+            </button>
+          </div>
+          <button class="btn-csv" onclick="downloadCSV()">
+            CSVダウンロード
+          </button>
+        </div>
+        <p class="note">※該当月の直近3か月実績(発注後案件)の平均を算出</p>
+
+        <!-- グラフエリア -->
+        <div class="chart-area">
+          <div id="chart-count" class="chart-wrapper">
+            <canvas id="countChart"></canvas>
+          </div>
+          <div id="chart-mfgtime" class="chart-wrapper" style="display: none">
+            <canvas id="mfgtimeChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/common.js"></script>
+    <script src="js/forecast.js"></script>
+  </body>
+</html>
